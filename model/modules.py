@@ -22,7 +22,7 @@ class ResnetGenerator(tf.keras.Model):
             tf.keras.layers.Conv2DTranspose(filters=ngf, kernel_size=3, strides=2, padding='same', output_padding=1, activation='relu')
         ])
 
-        self.conv = tf.keras.layers.Conv2D(output_nc, kernel_size=7, padding='same', activation='tanh')
+        self.conv = tf.keras.layers.Conv2D(output_nc, kernel_size=7, padding='same', activation='sigmoid')
 
     def call(self, x):
         # down sampling layer
