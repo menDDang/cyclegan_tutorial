@@ -1,10 +1,11 @@
 import tensorflow as tf
-
+from .normalization import InstanceNorm2D
 
 class NLayerDiscriminator(tf.keras.Model):
-    def __init__(self, nlayers, ndf):
+    def __init__(self, nlayers, ndf, momentum=0.99):
         super(NLayerDiscriminator, self).__init__()
         self.nlayers = nlayers
+        self.momentum = momentum
 
         self.conv1 = tf.keras.Sequential([
             tf.keras.layers.Conv2D(filters=ndf, kernel_size=4, strides=2, padding='valid'),
@@ -15,10 +16,10 @@ class NLayerDiscriminator(tf.keras.Model):
         sequence = []
         for n in range(1, nlayers):
             sequence.append(tf.keras.layers.Conv2D(filters=ndf * min(2**n, 8), kernel_size=4, strides=2, padding='valid'))
-            sequence.append(tfa.layers.InstanceNormalization())
+            sequence.append(InstanceNorm2D(momentum=self.momentum, dtype=self.dtype))
             sequence.append(tf.keras.layers.LeakyReLU(alpha=0.2))
         sequence.append(tf.keras.layers.Conv2D(ndf * min(2**nlayers, 8), kernel_size=4, strides=1, padding='valid'))
-        sequence.append(tfa.layers.InstanceNormalization())
+        sequence.append(InstanceNorm2D(momentum=self.momentum, dtype=self.dtype))
         sequence.append(tf.keras.layers.LeakyReLU(alpha=0.2))
 
         self.conv2 = tf.keras.Sequential(sequence)
