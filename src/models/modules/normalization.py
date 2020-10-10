@@ -2,7 +2,7 @@ import tensorflow as tf
     
 
 class BatchNorm2D(tf.keras.layers.Layer):
-    def __init__(self, momentum=0.9, epsilon=1e-7, **kwargs):
+    def __init__(self, momentum=0.9, epsilon=0.001, **kwargs):
         super().__init__(self, **kwargs)
 
         self.momentum = momentum
@@ -43,7 +43,7 @@ class BatchNorm2D(tf.keras.layers.Layer):
 
 
 class InstanceNorm2D(tf.keras.layers.Layer):
-    def __init__(self, momentum=0.9, epsilon=1e-7, **kwargs):
+    def __init__(self, momentum=0.9, epsilon=0.001, **kwargs):
         super().__init__(self, **kwargs)
 
         self.momentum = momentum
