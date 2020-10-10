@@ -1,2 +1,6 @@
+# ignore environment variables
+.vscode
+.vscode/*
+
 # ignore datasets
 datasets/*
