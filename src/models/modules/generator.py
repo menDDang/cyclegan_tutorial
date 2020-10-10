@@ -1,14 +1,15 @@
 import tensorflow as tf
-
+from .normalization import InstanceNorm2D
 
 class ResnetGenerator(tf.keras.Model):
-    def __init__(self, ngf, output_nc, nblocks):
+    def __init__(self, ngf, output_nc, nblocks, momentum=0.99):
         super(ResnetGenerator, self).__init__()
         self.nblocks = nblocks
+        self.momentum = momentum
 
         self.downsampling = tf.keras.Sequential([
             tf.keras.layers.Conv2D(filters=ngf, kernel_size=7, padding='same', activation=None),
-            tfa.layers.InstanceNormalization(),
+            InstanceNorm2D(momentum=self.momentum, dtype=self.dtype),
             tf.keras.layers.ReLU(),
             tf.keras.layers.Conv2D(filters=ngf * 2, kernel_size=3, strides=2, padding='same', activation='relu'),
             tf.keras.layers.Conv2D(filters=ngf * 4, kernel_size=3, strides=2, padding='same', activation='relu')
